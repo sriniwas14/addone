@@ -23,6 +23,7 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     private AppDatabase appDatabase;
+    private RecyclerView.LayoutManager layoutManager;
     private RecyclerView upcomingItemsView;
     private List<ReminderItem> upcomingItems = new ArrayList<>();
     private ReminderItemAdapter reminderItemAdapter;
@@ -37,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
         upcomingItemsView = findViewById(R.id.upcomingItemsView);
 
         reminderItemAdapter = new ReminderItemAdapter(upcomingItems);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         upcomingItemsView.setLayoutManager(layoutManager);
         upcomingItemsView.setItemAnimator(new DefaultItemAnimator());
 
@@ -46,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
         appDatabase = AppDatabase.getDatabaseInstance(this);
 
         getReminders();
-
+        reloadRecyclerView();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -63,16 +64,21 @@ public class HomeActivity extends AppCompatActivity {
         super.onResume();
         upcomingItems = new ArrayList<>();
         getReminders();
-        Log.e(this.getString(R.string.log_tag), "Returned Home! ");
+        reloadRecyclerView();
+    }
 
+    private void reloadRecyclerView(){
+        upcomingItemsView.swapAdapter(reminderItemAdapter, false);
+        reminderItemAdapter = new ReminderItemAdapter(upcomingItems);
+        upcomingItemsView.setAdapter(reminderItemAdapter);
+        upcomingItemsView.invalidate();
     }
 
     private void getReminders() {
         List<Reminder> items = appDatabase.reminderDao().getAll();
-        Log.e(this.getString(R.string.log_tag), "Returned Home! "+items.size());
 
         for(Reminder reminder: items){
-            ReminderItem reminderItem = new ReminderItem(String.valueOf(reminder.getId()), reminder.getTitle(), reminder.getDetails(), reminder.getDueAt(), reminder.getPriority());
+            ReminderItem reminderItem = new ReminderItem(String.valueOf(reminder.getId()), reminder.getTitle(), reminder.getDetails(), reminder.getDueAt(), reminder.getPriority(), reminder.getCompleted());
             upcomingItems.add(reminderItem);
         };
     }
