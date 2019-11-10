@@ -41,6 +41,8 @@ public class HomeActivity extends AppCompatActivity {
 
         addTempData();
 
+        AppDatabase appDatabase = AppDatabase.getDatabaseInstance(this);
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
