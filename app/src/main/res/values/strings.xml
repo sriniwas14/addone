@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">AddOne</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="log_tag">ADDONAP</string>
 </resources>
