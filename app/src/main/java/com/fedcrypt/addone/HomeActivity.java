@@ -1,9 +1,11 @@
 package com.fedcrypt.addone;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.fedcrypt.addone.adapters.ReminderItemAdapter;
 import com.fedcrypt.addone.elements.ReminderItem;
+import com.fedcrypt.addone.tables.Reminder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -13,12 +15,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
+    private AppDatabase appDatabase;
     private RecyclerView upcomingItemsView;
     private List<ReminderItem> upcomingItems = new ArrayList<>();
     private ReminderItemAdapter reminderItemAdapter;
@@ -39,26 +43,38 @@ public class HomeActivity extends AppCompatActivity {
 
         upcomingItemsView.setAdapter(reminderItemAdapter);
 
-        addTempData();
+        appDatabase = AppDatabase.getDatabaseInstance(this);
 
-        AppDatabase appDatabase = AppDatabase.getDatabaseInstance(this);
+        getReminders();
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(HomeActivity.this, AddReminderActivity.class);
+                startActivity(intent);
             }
         });
     }
 
-    private void addTempData(){
-        ReminderItem reminder = new ReminderItem("1", "Kill the cat", "Be Careful of the claws", "15:23", "Urgent");
-        upcomingItems.add(reminder);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        upcomingItems = new ArrayList<>();
+        getReminders();
+        Log.e(this.getString(R.string.log_tag), "Returned Home! ");
 
-        reminder = new ReminderItem("1", "Download Android Studio", "But you already have it installed", "17:23", "Urgent");
-        upcomingItems.add(reminder);
+    }
+
+    private void getReminders() {
+        List<Reminder> items = appDatabase.reminderDao().getAll();
+        Log.e(this.getString(R.string.log_tag), "Returned Home! "+items.size());
+
+        for(Reminder reminder: items){
+            ReminderItem reminderItem = new ReminderItem(String.valueOf(reminder.getId()), reminder.getTitle(), reminder.getDetails(), reminder.getDueAt(), reminder.getPriority());
+            upcomingItems.add(reminderItem);
+        };
     }
 
 }
