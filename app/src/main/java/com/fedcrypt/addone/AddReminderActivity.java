@@ -58,6 +58,7 @@ public class AddReminderActivity extends AppCompatActivity {
         reminder.setDetails(taskDetailsInput.getText().toString());
         reminder.setDueAt("3456789");
         reminder.setPriority("Urgent");
+        reminder.setCompleted(false);
 
         appDatabase.reminderDao().insertAll(reminder);
         return true;
