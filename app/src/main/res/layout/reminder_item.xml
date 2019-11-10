@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/itemHeader"
@@ -9,29 +9,38 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0" />
+
         <TextView
             android:id="@+id/itemTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="10dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="5dp"
             android:text="TextView"
             android:textSize="17dp" />
 
-        <Button
-            android:id="@+id/dontButton"
-            android:layout_width="10dp"
+        <TextView
+            android:id="@+id/dueAt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#007acc"
-            android:text="Done"
-            android:textAllCaps="false"
-            android:textColor="#ffffff" />
+            android:textColor="@color/colorPrimary"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="TextView"
+            android:textAlignment="textEnd" />
+
     </LinearLayout>
 
     <TextView
         android:id="@+id/taskDetails"
-        android:padding="10dp"
+        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView" />
@@ -46,16 +55,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="10dp"
+            android:textColor="@color/colorPriority"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
             android:text="TextView" />
 
-        <TextView
-            android:id="@+id/dueAt"
-            android:padding="10dp"
-            android:textAlignment="textEnd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
     </LinearLayout>
 </LinearLayout>
